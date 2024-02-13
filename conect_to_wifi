@@ -1,0 +1,29 @@
+
+import requests
+import pywifi
+import time 
+import logging
+
+class scaner_wifi():
+    def setup_logger():
+        logger = logging.getLogger("my_logger")
+        logger.setLevel(logging.DEBUG)
+        console_handler = logging.StreamHandler()
+        console_handler.setLevel(logging.DEBUG)
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        console_handler.setFormatter(formatter)
+        logger.addHandler(console_handler)
+        return logger
+
+    def scan_wifi(self):
+        logger = self.setup_logger()
+        wifi = pywifi.PyWiFi()
+        iface = wifi.interfaces()[0]
+        iface.scan()
+        time.sleep(2)
+        scan_results = iface.scan_results()
+        for result in scan_results:
+            logger.info(f"SSID: {result.ssid}, Signal Strength: {result.signal}")
+
+start = scaner_wifi()
+start.scan_wifi()
